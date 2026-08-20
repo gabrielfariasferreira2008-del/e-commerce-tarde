@@ -1,7 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Inject } from "@angular/core";
-
 type ProdutoApi = {
     title: string;
     price: number;
