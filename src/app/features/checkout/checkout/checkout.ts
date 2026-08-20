@@ -1,22 +1,43 @@
 import { Component } from '@angular/core';
 import { inject } from '@angular/core';
+
 import { signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+
 import { FormGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
+
 import { Validators } from '@angular/forms';
 import { AbstractControl } from '@angular/forms';
+
 import { ValidationErrors } from '@angular/forms';
 import { CarrinhoService } from '../../../core/services/carrinho.service';
 
-@Component({
+import { RouterLink } from "@angular/router";
+import { Router } from 'express';
+
+import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
+import { ItemCarrinho } from '../../../core/models/itens.carrinho';
+
+
+
+  Component({
   selector: 'app-checkout',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
+
+type PedidoFinalizado = {
+codigo: number;
+cliente: string;
+quantidadeItens: number;
+total: number;
+itens: ItemCarrinho[];
+};
+
 export class Checkout {
-  
+ pedidoFinalizado = signal<PedidoFinalizado | null>(null);
   carrinhoService = inject(CarrinhoService);
   
   formulario = new FormGroup({
@@ -27,7 +48,8 @@ export class Checkout {
 
 finalizar () {
   this.compraFinalizada.set(false);
-  
+  this.pedidoFinalizado.set(null);
+
   if(this.carrinhoService.carrinhoVazio()){
     console.log('Não é possivel finalizar a comprar com o carrinho vazio!');
     return;
@@ -40,12 +62,18 @@ finalizar () {
   
   const dados = this.formulario.value;
   const itens = this.carrinhoService.itens();
-  const total = this.carrinhoService.totalItens();
-  
+  const total = this.carrinhoService.totalIntens();
+
+const pedido: PedidoFinalizado = {
+codigo: Date.now(),
+cliente: dados.nome ?? '',
+quantidadeItens: itens.length,
+total,
+itens,
+};  
   console.log('Compra finalizada com sucesso!');
   console.log('Dados do Formulario:', dados);
-  console.log('Itens do carrinho: ', itens);
-  console.log('Total da compra: ', total);
+  console.log('Dados do Pedido:',pedido);
 
   this.carrinhoService.limpar();
   this.formulario.reset();
@@ -54,6 +82,7 @@ finalizar () {
 }
 
 compraFinalizada = signal(false)
+
 
 }
 
