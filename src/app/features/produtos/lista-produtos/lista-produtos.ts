@@ -1,15 +1,28 @@
 import { Component } from '@angular/core';
 import { signal } from '@angular/core';
+
 import { Produto } from '../produto/produto';
 import { computed } from '@angular/core';
+
 import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
 import { effect } from '@angular/core';
+
 import { UpperCasePipe } from '@angular/common';
 import { produtosService } from '../../../core/services/produtos.service';
+
 import { inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+
 import {MatCardModule} from '@angular/material/card';
 import { CarrinhoService } from '../../../core/services/carrinho.service';
+
+import { ItemCarrinho } from '../../../core/models/itens.carrinho';
+import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
+
+import { RouterLink } from '@angular/router';
+
+
+
 @Component({
   selector: 'app-lista-produtos',
   imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule],
@@ -17,9 +30,14 @@ import { CarrinhoService } from '../../../core/services/carrinho.service';
   styleUrl: './lista-produtos.css',
 })
 
+
+
 export class ListaProdutos {
 
+
+
 //? ============ SIGNALS =============
+
   
     produtos = signal < { nome: string ; preco: number } []> ([]); //! API (INICIA VAZIO)
     
@@ -98,16 +116,17 @@ substituirProdutos (){
           { nome: 'Desktop', preco: 500 },
             { nome: 'Headset', preco: 25 },
   ]);
+
 }
  
- adicionarAoCarrinho (produto: { nome:string; preco: number }){
+ adicionarAoCarrinho (produto: ItemCarrinho){
   this.carrinhoService.adicionar(produto);
  }
 
 //? ============ INJECT =============
 private produtosService = inject(produtosService);
-carrinhoService = inject(CarrinhoService);
 
+carrinhoService = inject(CarrinhoService);
 quantidadeCarrinho = this.carrinhoService.quantidadeItens;
-totalCarrinho = this.carrinhoService.totalItens;
+totalCarrinho = this.carrinhoService.totalIntens;
 }
