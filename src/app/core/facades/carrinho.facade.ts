@@ -4,9 +4,7 @@ import { CarrinhoService } from '../services/carrinho.service';
 import { ItemCarrinho } from '../models/itens.carrinho';
 
 
-@Injectable({
-providedIn: 'root',
-})
+
 
 @Injectable({
 providedIn: 'root',
@@ -14,18 +12,18 @@ providedIn: 'root',
 export class CarrinhoFacade {
 // A facade passa a ser a camada usada pelos componentes,
 // evitando que as telas dependam diretamente dos detalhes internos do service.
-private carrinhoService = inject(CarrinhoService);
+private carrinhoFacade = inject(CarrinhoService);
 // Sinais expostos para leitura pelas telas.
-itens = this.carrinhoService.itens;
-quantidade = this.carrinhoService.quantidadeItens;
-total = this.carrinhoService.totalIntens;
-carrinhoVazio = this.carrinhoService.carrinhoVazio;
+itens = this.carrinhoFacade.itens;
+quantidade = this.carrinhoFacade.quantidadeItens;
+total = this.carrinhoFacade.totalIntens;
+carrinhoVazio = this.carrinhoFacade.carrinhoVazio;
 // Ação de alto nível para adicionar produto ao carrinho.
 adicionarProduto(produto: ItemCarrinho) {
-this.carrinhoService.adicionar(produto);
+this.carrinhoFacade.adicionar(produto);
 }
 // Ação de alto nível para limpar o carrinho.
 limparCarrinho() {
-this.carrinhoService.limpar();
+this.carrinhoFacade.limpar();
 }
 }
