@@ -2,6 +2,32 @@ mat-toolbar {
   z-index: 1000;
   display: flex;
   flex-wrap: wrap;
+  background-color: rgb(255, 151, 24);
+}
+
+mat-toolbar a {
+   background-color: #ffffff;
+
+}
+mat-toolbar-button{
+    color:#ffffff;
+}
+
+.btn-entrar :hover{
+     background-color: rgb(159, 241, 76);
+     border: 2px;
+}
+
+
+.btn-sair:hover{
+     background-color:rgb(213, 60, 60);
+     
+}   
+
+.email-header {
+    color: #ffffff;
+    font-size: 18px;
+    margin: 10px;
 }
 
 .flex-spacer {

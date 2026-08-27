@@ -14,18 +14,17 @@ import { inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import {MatCardModule} from '@angular/material/card';
-import { CarrinhoService } from '../../../core/services/carrinho.service';
 
 import { ItemCarrinho } from '../../../core/models/itens.carrinho';
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 
 import { RouterLink } from '@angular/router';
-
+import { ProdutoLoja } from '../../../core/models/produto-loja';
 
 
 @Component({
   selector: 'app-lista-produtos',
-  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule],
+  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule, RouterLink],
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
@@ -34,12 +33,12 @@ import { RouterLink } from '@angular/router';
 
 export class ListaProdutos {
 
-
+produtos = signal<ProdutoLoja[]>([]);
 
 //? ============ SIGNALS =============
 
   
-    produtos = signal < { nome: string ; preco: number } []> ([]); //! API (INICIA VAZIO)
+    produto = signal < { nome: string ; preco: number } []> ([]); //! API (INICIA VAZIO)
     
     carregando = signal(true); //! CONTROLE DE CARREGAMENTO
     
@@ -81,7 +80,7 @@ carregarProdutos(){
   
   this.carregando.set(true); //! Ativa Loading
   this.erro.set(null); //? limpa o erro anterior
-
+  
   this.produtosService.buscarProdutos().subscribe({
         next: (dados) => {
           const produtos = this.produtosService.transformarProdutos(dados);
@@ -120,13 +119,28 @@ substituirProdutos (){
 }
  
  adicionarAoCarrinho (produto: ItemCarrinho){
-  this.carrinhoService.adicionar(produto);
+  this.carrinhoFacade.adicionarProduto(produto);
  }
 
 //? ============ INJECT =============
 private produtosService = inject(produtosService);
 
-carrinhoService = inject(CarrinhoService);
-quantidadeCarrinho = this.carrinhoService.quantidadeItens;
-totalCarrinho = this.carrinhoService.totalIntens;
+carrinhoFacade = inject(CarrinhoFacade);
+quantidadeCarrinho = this.carrinhoFacade.quantidade;
+totalCarrinho = this.carrinhoFacade.total;
+
+ValorTotal = computed(() => this.produtos().reduce((total, item) => total + item.preco, 0));
+valorTotalFormatado = computed(() => this.valorTotal().toFixed(2));
+
+Constructor() {
+this.carregarProdutos();
+''
+// Mantém apenas um efeito útil para a experiência do usuário.
+
+effect(() => {
+if (typeof document !== 'undefined') {
+document.title = `(${this.totalProdutos()}) Minha Loja`;
 }
+});
+}
+ }

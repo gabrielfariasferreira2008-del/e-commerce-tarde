@@ -22,8 +22,8 @@ removerItem(indice: number) {
 this.carrinhoFacade.limparCarrinho();
 }
 
-  limparCarrinho() {{ 
+  limparCarrinho() { 
 // Limpa todos os itens do carrinho.
 this.carrinhoFacade.limparCarrinho();
 }};
-}
+

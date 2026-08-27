@@ -2,10 +2,32 @@
 
 <!-- Estado 1: Loading -->
 
+<header class="cabecalho-produtos">
+<div>
+<h2>Produtos</h2>
+<p>Escolha os produtos e adicione-os ao carrinho.</p>
+</div>
+<button mat-stroked-button color="primary" routerLink="/carrinho">
+Ver carrinho ({{quantidadeCarrinho()}})
+</button>
+</header>
+
+
+
 @if(carregando()){
     <p>Carrendo Produtos...</p>
 }
 
+
+@if (erro()) {
+<section class="mensagem-erro">
+<p>{{ erro() }}</p>
+<button mat-raised-button color="primary" type="button" (click)="carregarProdutos()">
+Tentar novamente
+</button>
+</section>
+
+}
 <!-- Estado 2: Erro -->
  @if (erro()){
     <p style="color: red;">{{ erro() }}</p>
@@ -14,7 +36,12 @@
  }
  <!-- Estado 3: Sucesso -->
   @if(!carregando() && !erro()){
-    <p>Total de Produtos: {{totalProdutos() }}</p>
+
+<section class="resumo-produtos">
+<p>Total de produtos: {{ totalProdutos() }}</p>
+<p>Valor total do catálogo: R$ {{ valorTotalFormatado() }}</p>
+</section>
+
 <hr>
 <section class="grid-produtos">
 @for(item of produtos(); track $index){
@@ -29,13 +56,23 @@
 </section> 
 }
 
+<hr />
+<section class="produto-selecionado">
+<h3>Produto selecionado</h3>
+@if (produtoSelecionado()) {
+<p class="texto-sucesso">{{ produtoSelecionado() }}</p>
+} @else {
+<p class="texto-neutro">Nenhum produto selecionado.</p>
+}
+</section>
+
 <hr>
 <h2>carrinho</h2>
-@for(item of carrinhoService.itens(); track $index){
+@for(item of carrinhoFacade.itens(); track $index){
     <p>{{item.nome | uppercase}} - {{item.preco | precoFormatado}}</p>
 }
-<p><strong>Itens no carrinho: </strong> {{ carrinhoService.quantidadeItens() }}</p>
-<p><strong>Total no carrinho: </strong> {{ carrinhoService.totalIntens() | precoFormatado }}</p> 
+<p><strong>Itens no carrinho: </strong> {{ carrinhoFacade.quantidade() }}</p>
+<p><strong>Total no carrinho: </strong> {{ carrinhoFacade.total() | precoFormatado }}</p> 
 
 
 

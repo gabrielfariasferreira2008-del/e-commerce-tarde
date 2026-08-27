@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Inject } from "@angular/core";
+import { ProdutoLoja } from '../models/produto-loja';
 type ProdutoApi = {
     title: string;
     price: number;
@@ -17,6 +18,7 @@ export class produtosService {
     
     private API = 'https://fakestoreapi.com/products'; //! API oficial e funcionando da nossa aplicação, não mexer!!!!
    
+    
 
     buscarProdutos() {
         return this.http.get < ProdutoApi []>( this.API );
