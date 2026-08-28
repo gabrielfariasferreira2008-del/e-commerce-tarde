@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+
 import { RouterLink, Router } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
+
 import { inject } from '@angular/core';
 import { CarrinhoService } from '../../../core/services/carrinho.service';
+
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -29,6 +33,5 @@ export class Header {
   sair(){
     this.authService.logout();
     this.router.navigateByUrl('/login');
-  }
-  
+  }  
 }

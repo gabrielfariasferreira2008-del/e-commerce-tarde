@@ -1,7 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
+
 import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
 import { MatButtonModule } from '@angular/material/button';
+
 import {MatCardModule} from '@angular/material/card';
 import { ItemCarrinho } from '../../../core/models/itens.carrinho';
 
