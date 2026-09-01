@@ -1,8 +1,6 @@
 import { Component, inject, signal } from '@angular/core';  
-
 import { FormsModule } from '@angular/forms';
 
-import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-favoritos',
@@ -17,3 +15,4 @@ export class Favoritos {
   removerFavoritos= signal<Favoritos[]>([]);//Remover Produto de Favoritos
   
 }
+
